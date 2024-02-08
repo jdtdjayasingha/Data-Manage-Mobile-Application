@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748407113772",
+    "project_id": "test-app-baa4e",
+    "storage_bucket": "test-app-baa4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748407113772:android:3d9ab1a88ad1c4d29da989",
+        "android_client_info": {
+          "package_name": "com.example.data_manage_mobile_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7IH4HWz9tFK5t4i6RppKyKgn2YxD_hBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

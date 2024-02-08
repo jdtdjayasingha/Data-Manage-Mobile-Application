@@ -1,4 +1,4 @@
-import 'package:data_manage_mobile_application/Screen/NewStudent.dart';
+import 'package:data_manage_mobile_application/Screen/new.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -43,11 +43,6 @@ class _HomeState extends State<Home> {
               ),
             ),
           ],
-        ),
-      ),
-      body: Container(
-        child: Column(
-          children: [],
         ),
       ),
     );
