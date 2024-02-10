@@ -1,4 +1,6 @@
-import 'package:data_manage_mobile_application/Screen/home.dart';
+
+
+import 'package:data_manage_mobile_application/Screen/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

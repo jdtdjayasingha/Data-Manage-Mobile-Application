@@ -1,4 +1,7 @@
+import 'package:data_manage_mobile_application/Service/database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:random_string/random_string.dart';
 
 class NewStudent extends StatefulWidget {
   const NewStudent({super.key});
@@ -8,6 +11,9 @@ class NewStudent extends StatefulWidget {
 }
 
 class _NewStudentState extends State<NewStudent> {
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController agecontroller = TextEditingController();
+  TextEditingController locationcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +70,7 @@ class _NewStudentState extends State<NewStudent> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextField(
+                  controller: namecontroller,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
@@ -90,6 +97,7 @@ class _NewStudentState extends State<NewStudent> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextField(
+                  controller: agecontroller,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
@@ -116,6 +124,7 @@ class _NewStudentState extends State<NewStudent> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextField(
+                  controller: locationcontroller,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
@@ -123,7 +132,27 @@ class _NewStudentState extends State<NewStudent> {
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String Id = randomAlphaNumeric(10);
+                  Map<String, dynamic> studentInfoMap = {
+                    "Name": namecontroller.text,
+                    "Age": agecontroller.text,
+                    "Id": Id,
+                    "Location": locationcontroller.text,
+                  };
+                  await Database()
+                      .addStudentDetails(studentInfoMap, Id)
+                      .then((value) {
+                    Fluttertoast.showToast(
+                        msg: "Student Details has been uploaded successfuly",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  });
+                },
                 child: Text(
                   "Add",
                   style: TextStyle(
