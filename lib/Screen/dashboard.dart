@@ -39,11 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
         'email': _emailEditingController.text,
       },
     );
-
-    _nameEditingController.clear();
-    _ageEditingController.clear();
-    _locationEditingController.clear();
-    _emailEditingController.clear();
   }
 
   void _updateItem(DocumentSnapshot doc) async {
@@ -54,45 +49,110 @@ class _MyHomePageState extends State<MyHomePage> {
             TextEditingController(text: doc['name']);
         final TextEditingController agecontroller =
             TextEditingController(text: doc['age']);
+        final TextEditingController locationcontroller =
+            TextEditingController(text: doc['location']);
+        final TextEditingController emailcontroller =
+            TextEditingController(text: doc['email']);
 
-        return AlertDialog(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Update Item'),
-              TextField(
-                controller: namecontroller,
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 100,
+            ),
+            child: AlertDialog(
+              title: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Update ",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        "Student",
+                        style: TextStyle(
+                          color: Colors.yellow,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextField(
+                    controller: namecontroller,
+                  ),
+                  TextField(
+                    controller: agecontroller,
+                  ),
+                  TextField(
+                    controller: locationcontroller,
+                  ),
+                  TextField(
+                    controller: emailcontroller,
+                  ),
+                ],
               ),
-              TextField(
-                controller: agecontroller,
-              ),
-            ],
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () async {
+                    await doc.reference.delete();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await doc.reference.update({
+                      'name': namecontroller.text,
+                      'age': agecontroller.text,
+                      'location': locationcontroller.text,
+                      'email': emailcontroller.text,
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Update',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 8,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await doc.reference.update({
-                  'name': namecontroller.text,
-                  'age': agecontroller.text,
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text('Update'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await doc.reference.delete();
-                Navigator.of(context).pop();
-              },
-              child: Text('Delete'),
-            ),
-          ],
         );
       },
     );
@@ -155,8 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         title: Column(
                           children: [
                             Material(
-                              elevation: 5,
-                              borderRadius: BorderRadius.circular(10),
+                              elevation: 10,
+                              borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
@@ -169,10 +229,38 @@ class _MyHomePageState extends State<MyHomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('Name: ' + doc['name']),
-                                      Text('Age: ' + doc['age']),
-                                      Text('Location: ' + doc['location']),
-                                      Text('Email: ' + doc['email']),
+                                      Text(
+                                        'Name: ' + doc['name'],
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Age: ' + doc['age'],
+                                        style: TextStyle(
+                                          color: Colors.yellow,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Location: ' + doc['location'],
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Email: ' + doc['email'],
+                                        style: TextStyle(
+                                          color: Colors.yellow,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

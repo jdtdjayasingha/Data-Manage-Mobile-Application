@@ -75,7 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -109,13 +112,13 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 25.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.yellow,
                 ),
                 onPressed: _addItem,
                 child: Text(
                   'Add Student',
                   style: TextStyle(
-                    color: Colors.yellow,
+                    color: Colors.blue,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
