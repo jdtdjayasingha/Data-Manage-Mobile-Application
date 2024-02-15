@@ -7,13 +7,7 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Firebase CRUD',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
+    return MyHomePage();
   }
 }
 
@@ -23,7 +17,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _nameEditingController = TextEditingController();
+  final TextEditingController _ageEditingController = TextEditingController();
+  final TextEditingController _locationEditingController =
+      TextEditingController();
+  final TextEditingController _emailEditingController = TextEditingController();
   late CollectionReference _collectionReference;
 
   @override
@@ -33,20 +31,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addItem() async {
-    await _collectionReference.add({'name': _textEditingController.text});
-    _textEditingController.clear();
+    await _collectionReference.add(
+      {
+        'name': _nameEditingController.text,
+        'age': _ageEditingController.text,
+        'location': _locationEditingController.text,
+        'email': _emailEditingController.text,
+      },
+    );
+
+    _nameEditingController.clear();
+    _ageEditingController.clear();
+    _locationEditingController.clear();
+    _emailEditingController.clear();
   }
 
   void _updateItem(DocumentSnapshot doc) async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        final TextEditingController controller =
+        final TextEditingController namecontroller =
             TextEditingController(text: doc['name']);
+        final TextEditingController agecontroller =
+            TextEditingController(text: doc['age']);
+
         return AlertDialog(
-          title: Text('Update Item'),
-          content: TextField(
-            controller: controller,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Update Item'),
+              TextField(
+                controller: namecontroller,
+              ),
+              TextField(
+                controller: agecontroller,
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -57,7 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
               onPressed: () async {
-                await doc.reference.update({'name': controller.text});
+                await doc.reference.update({
+                  'name': namecontroller.text,
+                  'age': agecontroller.text,
+                });
                 Navigator.of(context).pop();
               },
               child: Text('Update'),
@@ -79,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.yellow,
         onPressed: () {
           Navigator.push(
             context,
@@ -87,8 +111,31 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: const Icon(Icons.add),
       ),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              "Student ",
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Text(
+              "Database",
+              style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -105,7 +152,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (BuildContext context, int index) {
                       final DocumentSnapshot doc = snapshot.data!.docs[index];
                       return ListTile(
-                        title: Text(doc['name']),
+                        title: Column(
+                          children: [
+                            Material(
+                              elevation: 5,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Name: ' + doc['name']),
+                                      Text('Age: ' + doc['age']),
+                                      Text('Location: ' + doc['location']),
+                                      Text('Email: ' + doc['email']),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         onTap: () => _updateItem(doc),
                       );
                     },

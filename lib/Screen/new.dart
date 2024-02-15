@@ -11,12 +11,18 @@ class New extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _nameEditingController = TextEditingController();
+  final TextEditingController _ageEditingController = TextEditingController();
+  final TextEditingController _locationEditingController =
+      TextEditingController();
+  final TextEditingController _emailEditingController = TextEditingController();
   late CollectionReference _collectionReference;
 
   @override
@@ -26,69 +32,97 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addItem() async {
-    await _collectionReference.add({'name': _textEditingController.text});
-    _textEditingController.clear();
-  }
-
-  void _updateItem(DocumentSnapshot doc) async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final TextEditingController controller =
-            TextEditingController(text: doc['name']);
-        return AlertDialog(
-          title: Text('Update Item'),
-          content: TextField(
-            controller: controller,
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await doc.reference.update({'name': controller.text});
-                Navigator.of(context).pop();
-              },
-              child: Text('Update'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await doc.reference.delete();
-                Navigator.of(context).pop();
-              },
-              child: Text('Delete'),
-            ),
-          ],
-        );
+    await _collectionReference.add(
+      {
+        'name': _nameEditingController.text,
+        'age': _ageEditingController.text,
+        'location': _locationEditingController.text,
+        'email': _emailEditingController.text,
       },
     );
+
+    _nameEditingController.clear();
+    _ageEditingController.clear();
+    _locationEditingController.clear();
+    _emailEditingController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(labelText: 'Item Name'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const [
+            Text(
+              "New ",
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: _addItem,
-              child: Text('Add Item'),
+            Text(
+              "Student",
+              style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                controller: _nameEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                controller: _ageEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Age',
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                controller: _locationEditingController,
+                decoration: InputDecoration(
+                  labelText: 'location',
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                controller: _emailEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
+              SizedBox(height: 25.0),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                onPressed: _addItem,
+                child: Text(
+                  'Add Student',
+                  style: TextStyle(
+                    color: Colors.yellow,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
